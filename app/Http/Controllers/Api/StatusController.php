@@ -36,7 +36,7 @@ class StatusController extends Controller
         return response()->json([
             'message' => 'Successfully created status!',
             'status' => 'success',
-        ]);
+        ], 201);
     }
 
     /**
