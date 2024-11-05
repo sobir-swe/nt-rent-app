@@ -11,4 +11,9 @@ class Status extends Model
     use HasFactory;
 
     protected $fillable = ['name'];
+
+    public function ads(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Ad::class);
+    }
 }
