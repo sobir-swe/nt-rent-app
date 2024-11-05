@@ -44,6 +44,15 @@ class UserController extends Controller
      */
     public function store(Request $request): \Illuminate\Http\JsonResponse
     {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'gender' => 'required|string|in:male,female',
+            'password' => 'required|string|min:8',
+            'position' => 'nullable|string|max:100',
+            'phone' => 'nullable|string|max:20',
+        ]);
+
         $user = User::query()->create([
             'name' => $request['name'],
             'email' => $request['email'],
@@ -56,8 +65,8 @@ class UserController extends Controller
         return response()->json([
             'message' => 'User created successfully',
             'status' => 'success',
-            'token' => $user->createToken($user->name)->plainTextToken
-        ]);
+            'token' => $user->createToken($user->name)->plainTextToken,
+        ], 201);
     }
 
     /**
@@ -79,14 +88,23 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id): \Illuminate\Http\JsonResponse
     {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+            'gender' => 'required|string|in:male,female',
+            'password' => 'nullable|string|min:8',
+            'position' => 'nullable|string|max:100',
+            'phone' => 'nullable|string|max:20',
+        ]);
+
         $user = User::query()->findOrFail($id);
         $user->update([
             'name' => $request['name'],
             'email' => $request['email'],
             'gender' => $request['gender'],
-            'password' => Hash::make($request['password']),
+            'password' => $request['password'] ? Hash::make($request['password']) : $user->password,
             'position' => $request['position'],
             'phone' => $request['phone'],
         ]);
