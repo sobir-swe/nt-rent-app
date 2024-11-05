@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             BranchSeeder::class,
             RoleSeeder::class,
             AdSeeder::class,
+            AdImageSeeder::class,
         ]);
     }
 }
