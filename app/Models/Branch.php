@@ -10,5 +10,10 @@ class Branch extends Model
     /** @use HasFactory<\Database\Factories\BranchFactory> */
     use HasFactory;
 
-    protected $fillable = ['name', 'address',];
+    protected $fillable = ['name', 'address'];
+
+    public function ads(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Ad::class);
+    }
 }
