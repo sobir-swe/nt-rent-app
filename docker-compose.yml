@@ -14,7 +14,7 @@ services:
 
     postgres:
         image: postgres
-        container_name: my_postgres
+        container_name: rent_postgres
         restart: always
         environment:
             POSTGRES_DB: ${DB_DATABASE}
@@ -27,7 +27,7 @@ services:
         expose:
             - 5432
         ports:
-            - "1234:5432"
+            - "11234:5432"
 
     rent_pgadmin:
         image: dpage/pgadmin4
