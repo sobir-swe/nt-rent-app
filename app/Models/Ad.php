@@ -14,7 +14,7 @@ class Ad extends Model
         'title',
         'description',
         'user_id',
-        'brand_id',
+        'branch_id',
         'status_id',
         'address',
         'gender',
