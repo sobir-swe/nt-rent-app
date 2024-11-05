@@ -27,12 +27,17 @@ class BranchController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): void
+    public function store(Request $request): \Illuminate\Http\JsonResponse
     {
         $branch = Branch::query()->create([
             'name' => $request['name'],
             'address' => $request['address'],
         ]);
+
+        return response()->json([
+            'message' => 'Created successfully',
+            'status' => 'success',
+        ], 201);
     }
 
     /**
