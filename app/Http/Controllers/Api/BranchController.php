@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
+use App\Models\Branch;
 use Illuminate\Http\Request;
 
 class BranchController extends Controller
@@ -11,7 +13,7 @@ class BranchController extends Controller
      */
     public function index()
     {
-        //
+        return Branch::all();
     }
 
     /**
@@ -25,9 +27,12 @@ class BranchController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): void
     {
-        //
+        $branch = Branch::query()->create([
+            'name' => $request['name'],
+            'address' => $request['address'],
+        ]);
     }
 
     /**
@@ -35,7 +40,7 @@ class BranchController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return Branch::query()->findOrFail($id);
     }
 
     /**
@@ -49,16 +54,30 @@ class BranchController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id): \Illuminate\Http\JsonResponse
     {
-        //
+        $branch = Branch::query()->findOrFail($id);
+        $branch->update([
+            'name' => $request['name'],
+            'address' => $request['address'],
+        ]);
+
+        return response()->json([
+            'message' => 'Updated successfully',
+            'status' => 'success',
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id): \Illuminate\Http\JsonResponse
     {
-        //
+        $branch = Branch::query()->findOrFail($id);
+        $branch->delete();
+        return response()->json([
+            'message' => 'Deleted successfully',
+            'status' => 'success',
+        ]);
     }
 }

@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
+use App\Models\Status;
 use Illuminate\Http\Request;
 
 class StatusController extends Controller
@@ -9,9 +11,9 @@ class StatusController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): \Illuminate\Database\Eloquent\Collection
     {
-        //
+        return Status::all();
     }
 
     /**
@@ -25,9 +27,16 @@ class StatusController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Http\JsonResponse
     {
-        //
+        $status = Status::query()->create([
+            'name' => $request['name'],
+        ]);
+
+        return response()->json([
+            'message' => 'Successfully created status!',
+            'status' => 'success',
+        ]);
     }
 
     /**
@@ -35,7 +44,7 @@ class StatusController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return Status::query()->findOrFail($id);
     }
 
     /**
@@ -49,16 +58,29 @@ class StatusController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id): \Illuminate\Http\JsonResponse
     {
-        //
+        $status = Status::query()->findOrFail($id);
+        $status->update([
+            'name' => $request['name'],
+        ]);
+
+        return response()->json([
+            'message' => 'Successfully updated status!',
+            'status' => 'success'
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id): \Illuminate\Http\JsonResponse
     {
-        //
+        $status = Status::query()->findOrFail($id);
+        $status->delete();
+        return response()->json([
+            'message' => 'Successfully deleted status!',
+            'status' => 'success'
+        ]);
     }
 }
